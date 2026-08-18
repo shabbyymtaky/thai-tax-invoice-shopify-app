@@ -1,0 +1,5 @@
+.tax-invoice-request { border: 1px solid rgba(0,0,0,.15); padding: 1.25rem; margin: 1rem 0; border-radius: .25rem; }
+.tax-invoice-request form { display: grid; gap: .75rem; }
+.tax-invoice-request label { display: grid; gap: .25rem; font-size: .9rem; }
+.tax-invoice-request input, .tax-invoice-request select, .tax-invoice-request textarea { width: 100%; box-sizing: border-box; padding: .6rem; border: 1px solid rgba(0,0,0,.35); border-radius: .25rem; }
+.tax-invoice-request button { width: fit-content; padding: .7rem 1rem; cursor: pointer; }

@@ -1,0 +1,7 @@
+{
+  "name": "tax-invoice-checkout-extension",
+  "private": true,
+  "dependencies": {
+    "@shopify/ui-extensions-react": "^2025.7.3"
+  }
+}

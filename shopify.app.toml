@@ -1,0 +1,44 @@
+# Public App Store configuration for Thai Tax Invoice.
+# Replace the example URL before deploying to production.
+client_id = "ddcd19441671f030ccac3ae049bea12a"
+name = "Thai Tax Invoice"
+application_url = "https://tax-invoice.example.com"
+embedded = true
+
+[auth]
+redirect_urls = ["https://tax-invoice.example.com/auth/callback"]
+
+[access_scopes]
+scopes = "read_orders"
+
+[app_proxy]
+url = "/tax-invoice/request"
+subpath = "tax-invoice"
+prefix = "apps"
+
+[build]
+include_config_on_deploy = true
+automatically_update_urls_on_dev = true
+
+[webhooks]
+api_version = "2026-07"
+
+[[webhooks.subscriptions]]
+uri = "/webhooks/app/uninstalled"
+topics = ["app/uninstalled"]
+
+[[webhooks.subscriptions]]
+uri = "/webhooks/app/scopes_update"
+topics = ["app/scopes_update"]
+
+[[webhooks.subscriptions]]
+uri = "/webhooks/orders/create"
+topics = ["orders/create"]
+
+[[webhooks.subscriptions]]
+uri = "/webhooks/fulfillments/create"
+topics = ["fulfillments/create"]
+
+[[webhooks.subscriptions]]
+uri = "/webhooks/compliance"
+compliance_topics = ["customers/data_request", "customers/redact", "shop/redact"]

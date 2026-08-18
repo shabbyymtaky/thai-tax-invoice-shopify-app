@@ -1,0 +1,36 @@
+<div class="tax-invoice-request" data-tax-invoice-request>
+  <h3>{{ block.settings.heading }}</h3>
+  <p>{{ block.settings.description }}</p>
+  <form data-tax-invoice-form>
+    <input type="hidden" name="cartToken" value="{{ cart.token }}">
+    <label>{{ block.settings.email_label }}<input required type="email" name="customerEmail" autocomplete="email"></label>
+    <label>{{ block.settings.name_label }}<input required type="text" name="buyerName" autocomplete="name"></label>
+    <label>{{ block.settings.type_label }}<select name="buyerType"><option value="individual">Individual</option><option value="company">Company / VAT registered</option></select></label>
+    <label>Tax ID<input type="text" name="buyerTaxId" inputmode="numeric"></label>
+    <label>Branch number<input type="text" name="buyerBranch" value="00000"></label>
+    <label>{{ block.settings.address_label }}<textarea required name="buyerAddress" autocomplete="street-address"></textarea></label>
+    <label>{{ block.settings.order_label }}<input type="text" name="orderName" placeholder="#1001"></label>
+    <button type="submit">{{ block.settings.button_label }}</button>
+    <p role="status" data-tax-invoice-status></p>
+  </form>
+</div>
+
+{% schema %}
+{
+  "name": "Tax Invoice request",
+  "target": "section",
+  "stylesheet": "tax-invoice-request.css",
+  "javascript": "tax-invoice-request.js",
+  "enabled_on": { "templates": ["cart"] },
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Request a Tax Invoice / ขอใบกำกับภาษี" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Submit your tax details and we will email the seller-issued Full Tax Invoice." },
+    { "type": "text", "id": "email_label", "label": "Email label", "default": "Email for Tax Invoice" },
+    { "type": "text", "id": "name_label", "label": "Name label", "default": "Buyer name" },
+    { "type": "text", "id": "type_label", "label": "Type label", "default": "Buyer type" },
+    { "type": "text", "id": "address_label", "label": "Address label", "default": "Registered address" },
+    { "type": "text", "id": "order_label", "label": "Order label", "default": "Order number (optional after purchase)" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Request Tax Invoice" }
+  ]
+}
+{% endschema %}

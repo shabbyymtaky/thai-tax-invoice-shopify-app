@@ -1,0 +1,11 @@
+api_version = "2026-07"
+
+[[extensions]]
+type = "ui_extension"
+name = "Tax Invoice request"
+handle = "tax-invoice-checkout"
+uid = "50b9428c-96a5-ae71-7142-69a79fdf2fbb374e84c0"
+
+[[extensions.targeting]]
+target = "purchase.checkout.block.render"
+module = "./src/Checkout.jsx"
