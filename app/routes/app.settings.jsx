@@ -20,6 +20,12 @@ export const action = async ({ request }) => {
 export default function SettingsPage() {
   const { settings } = useLoaderData();
   const actionData = useActionData();
+  const vatRate = Number(settings.vatRate || 0);
+  const sampleTotal = 1070;
+  const sampleNet = settings.priceIncludesVat && vatRate > 0 ? sampleTotal / (1 + vatRate / 100) : sampleTotal;
+  const sampleVat = settings.priceIncludesVat ? sampleTotal - sampleNet : sampleTotal * (vatRate / 100);
+  const sampleGrandTotal = settings.priceIncludesVat ? sampleTotal : sampleTotal + sampleVat;
+  const money = (value) => Number(value).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   return (
     <s-page heading="Tax Invoice settings">
       <s-link slot="breadcrumb-actions" href="/app">Dashboard</s-link>
@@ -45,6 +51,34 @@ export default function SettingsPage() {
         <s-section heading="Optional branding">
           <s-paragraph>These images are printed on the PDF as visual branding. They are not cryptographic digital signatures and do not make the file an e-Tax Invoice.</s-paragraph>
           <s-stack direction="block" gap="base"><label>Company logo<input name="logo" type="file" accept="image/png,image/jpeg,image/webp" /></label><label>Authorized signature image<input name="signature" type="file" accept="image/png,image/jpeg,image/webp" /></label><label>Company stamp image<input name="stamp" type="file" accept="image/png,image/jpeg,image/webp" /></label></s-stack>
+        </s-section>
+        <s-section heading="Saved invoice preview">
+          <s-paragraph>This preview uses the saved seller settings and a sample order. It is a visual preview; the issued PDF uses the actual Shopify order and buyer details.</s-paragraph>
+          <div style={{ background: "#ffffff", border: "1px solid #dfe3e8", borderRadius: "12px", color: "#202223", maxWidth: "760px", padding: "28px" }}>
+            <div style={{ alignItems: "flex-start", display: "flex", justifyContent: "space-between", gap: "24px" }}>
+              <div>
+                {settings.logoDataUrl ? <img src={settings.logoDataUrl} alt="Saved company logo" style={{ maxHeight: "52px", maxWidth: "180px", objectFit: "contain" }} /> : <div style={{ fontSize: "18px", fontWeight: 700 }}>{settings.sellerName || "Your company name"}</div>}
+                <div style={{ fontSize: "12px", marginTop: "8px", whiteSpace: "pre-line" }}>{settings.sellerAddress || "Registered address"}</div>
+                <div style={{ fontSize: "12px", marginTop: "4px" }}>Tax ID: {settings.sellerTaxId || "0000000000000"} · Branch: {settings.sellerBranch || "00000"}</div>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <div style={{ fontSize: "20px", fontWeight: 700 }}>{settings.invoiceLanguage === "en" ? "TAX INVOICE" : "ใบกำกับภาษี"}</div>
+                <div style={{ fontSize: "12px", marginTop: "6px" }}>{settings.invoicePrefix}{String(settings.nextInvoiceNumber).padStart(6, "0")}</div>
+              </div>
+            </div>
+            <div style={{ borderTop: "1px solid #dfe3e8", marginTop: "22px", paddingTop: "16px" }}>
+              <div style={{ fontSize: "12px", fontWeight: 700 }}>Buyer / ผู้ซื้อ</div>
+              <div style={{ fontSize: "12px", marginTop: "5px" }}>Sample Company Co., Ltd. · Tax ID 0105555000000 · Branch 00000</div>
+              <div style={{ fontSize: "12px", marginTop: "3px" }}>99 Sample Road, Bangkok 10110</div>
+            </div>
+            <div style={{ borderTop: "1px solid #dfe3e8", marginTop: "20px", paddingTop: "12px" }}>
+              <div style={{ display: "flex", fontSize: "12px", fontWeight: 700, justifyContent: "space-between" }}><span>Description</span><span>Amount (THB)</span></div>
+              <div style={{ display: "flex", fontSize: "12px", justifyContent: "space-between", marginTop: "12px" }}><span>Sample product × 1</span><span>{money(sampleNet)}</span></div>
+              <div style={{ display: "flex", fontSize: "12px", justifyContent: "space-between", marginTop: "8px" }}><span>VAT {vatRate.toFixed(2)}%</span><span>{money(sampleVat)}</span></div>
+              <div style={{ borderTop: "1px solid #dfe3e8", display: "flex", fontSize: "14px", fontWeight: 700, justifyContent: "space-between", marginTop: "12px", paddingTop: "10px" }}><span>Total</span><span>{money(sampleGrandTotal)}</span></div>
+            </div>
+            {(settings.signatureDataUrl || settings.stampDataUrl) && <div style={{ alignItems: "flex-end", display: "flex", gap: "18px", justifyContent: "flex-end", marginTop: "20px" }}>{settings.signatureDataUrl && <img src={settings.signatureDataUrl} alt="Saved signature" style={{ maxHeight: "54px", maxWidth: "120px", objectFit: "contain" }} />}{settings.stampDataUrl && <img src={settings.stampDataUrl} alt="Saved company stamp" style={{ maxHeight: "70px", maxWidth: "90px", objectFit: "contain" }} />}</div>}
+          </div>
         </s-section>
         <s-button type="submit" variant="primary">Save settings</s-button>
       </Form>
