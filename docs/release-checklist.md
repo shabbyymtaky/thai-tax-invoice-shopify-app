@@ -12,6 +12,7 @@
 - [ ] Place an order with a buyer request and verify `orders/create`
 - [ ] Verify issue-at-order, issue-at-fulfillment, and manual modes
 - [ ] Verify PDF download, Thai characters, VAT, seller/buyer data, and invoice number
+- [ ] Verify the saved invoice preview reflects seller settings and branding images
 - [ ] Configure Resend in a non-production test environment and verify attachment delivery
 - [ ] Uninstall and confirm merchant data cleanup
 

@@ -7,7 +7,8 @@
 3. Buyer can request a tax invoice in a cart theme app block or through a checkout UI extension. The form supports individual/company, Tax ID, branch, registered address, and destination email.
 4. `orders/create` links the buyer request to the order. The merchant can choose issue at order creation, fulfillment, or manual approval.
 5. The app calculates Thai VAT, creates a numbered A4 PDF, shows it in the admin, and emails it through Resend when configured.
-6. Mandatory public-app privacy webhooks are registered for customer data request, customer redaction, and shop redaction.
+6. Settings includes a saved-configuration preview of the Thai + English invoice layout, including uploaded branding images.
+7. Mandatory public-app privacy webhooks are registered for customer data request, customer redaction, and shop redaction.
 
 ## Operational assumptions
 
