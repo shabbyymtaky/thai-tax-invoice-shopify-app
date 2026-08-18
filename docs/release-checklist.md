@@ -14,6 +14,8 @@
 - [ ] Verify PDF download, Thai characters, VAT, seller/buyer data, and invoice number
 - [ ] Verify the saved invoice preview reflects seller settings and branding images
 - [ ] Configure Resend in a non-production test environment and verify attachment delivery
+- [ ] Paste the Shopify standard email link snippet into Order confirmation and Shipping confirmation notifications
+- [ ] Test the App Proxy download page with the requested invoice email and a wrong email
 - [ ] Uninstall and confirm merchant data cleanup
 
 ## Partner Dashboard

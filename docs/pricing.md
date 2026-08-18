@@ -25,6 +25,7 @@ The first launch should use a simple recurring model. Add usage-based overages o
 - Buyer request form in cart and checkout
 - VAT 7% calculation with configurable VAT-inclusive pricing
 - Automatic invoice numbering and PDF email delivery
+- Shopify standard email + secure PDF link by default; optional PDF attachment delivery
 - Thai + English invoice layout
 - Optional company logo, signature, and stamp image
 
