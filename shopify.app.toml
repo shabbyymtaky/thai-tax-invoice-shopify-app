@@ -9,7 +9,7 @@ embedded = true
 redirect_urls = ["https://tax-invoice.example.com/auth/callback"]
 
 [access_scopes]
-scopes = "read_orders"
+scopes = "read_orders,read_fulfillments"
 
 [app_proxy]
 url = "/tax-invoice/request"
@@ -17,7 +17,6 @@ subpath = "tax-invoice"
 prefix = "apps"
 
 [build]
-include_config_on_deploy = true
 automatically_update_urls_on_dev = true
 
 [webhooks]

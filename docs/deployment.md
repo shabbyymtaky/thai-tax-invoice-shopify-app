@@ -9,7 +9,7 @@
 
 ## Environment variables
 
-Set `SHOPIFY_API_KEY`, `SHOPIFY_API_SECRET`, `SHOPIFY_APP_URL`, `SCOPES=read_orders`, `DATABASE_URL`, `RESEND_API_KEY`, and `EMAIL_FROM`. Never commit `.env` or tokens.
+Set `SHOPIFY_API_KEY`, `SHOPIFY_API_SECRET`, `SHOPIFY_APP_URL`, `SCOPES=read_orders,read_fulfillments`, `DATABASE_URL`, `RESEND_API_KEY`, and `EMAIL_FROM`. Never commit `.env` or tokens.
 
 ## Build and start
 
