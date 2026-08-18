@@ -28,6 +28,10 @@ function parseNoteAttributes(payload) {
   return Object.fromEntries(attrs.map((item) => [item.name || item.key, item.value]));
 }
 
+export function shopifyTaxInvoiceLink(shop, orderName) {
+  return `https://${shop}/apps/tax-invoice/download?order=${encodeURIComponent(orderName)}`;
+}
+
 export function requestFromOrderNotes(payload) {
   const notes = parseNoteAttributes(payload);
   if (notes.tax_invoice_requested !== "true") return null;
@@ -175,7 +179,7 @@ export async function issueInvoiceForRequest(request) {
   const snapshot = JSON.parse(invoice.snapshotJson);
   const pdf = await renderInvoicePdf(snapshot);
   let emailSentAt = invoice.emailSentAt;
-  if (settings.autoEmail && invoice.customerEmail && !emailSentAt) {
+  if (settings.emailDeliveryMode === "resend_attachment" && settings.autoEmail && invoice.customerEmail && !emailSentAt) {
     if (await sendInvoiceEmail({ to: invoice.customerEmail, invoiceNumber: invoice.invoiceNumber, orderName: invoice.orderName, pdf })) {
       emailSentAt = new Date();
       await db.taxInvoice.update({ where: { id: invoice.id }, data: { emailSentAt } });
@@ -185,7 +189,7 @@ export async function issueInvoiceForRequest(request) {
     where: { id: request.id },
     data: { status: "issued", invoiceId: invoice.id, errorMessage: null },
   });
-  return { ...invoice, emailSentAt, pdf };
+  return { ...invoice, emailSentAt, pdf, downloadUrl: shopifyTaxInvoiceLink(request.shop, invoice.orderName), deliveryMode: settings.emailDeliveryMode };
 }
 
 export async function getInvoicePdf(shop, id) {

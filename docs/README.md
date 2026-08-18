@@ -5,6 +5,7 @@
 - [Pricing and App Store listing](./pricing.md)
 - [App Store listing draft](./app-store-listing.md)
 - [Deployment](./deployment.md)
+- [Shopify standard email setup](./shopify-email-setup.md)
 - [Release and review checklist](./release-checklist.md)
 - [Privacy and tax boundary](./privacy-and-tax-note.md)
 

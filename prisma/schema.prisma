@@ -49,6 +49,7 @@ model MerchantSettings {
   invoiceLanguage   String   @default("th-en")
   issueTiming       String   @default("order_created")
   autoEmail         Boolean  @default(true)
+  emailDeliveryMode String   @default("shopify_link")
   logoDataUrl       String?
   signatureDataUrl  String?
   stampDataUrl      String?

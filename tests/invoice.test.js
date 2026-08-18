@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import crypto from "node:crypto";
 import process from "node:process";
 import test from "node:test";
-import { buildSnapshot } from "../app/lib/invoice.server.js";
+import { buildSnapshot, shopifyTaxInvoiceLink } from "../app/lib/invoice.server.js";
 import { renderInvoicePdf } from "../app/lib/pdf.server.js";
 import { verifyAppProxyRequest } from "../app/lib/app-proxy.server.js";
 
@@ -47,4 +47,8 @@ test("App Proxy HMAC verification rejects tampering", () => {
   const hmac = crypto.createHmac("sha256", "test-secret").update(new URLSearchParams([...params.entries()].sort(([a], [b]) => a.localeCompare(b))).toString()).digest("hex");
   assert.equal(verifyAppProxyRequest(new Request(`https://app.example.com/tax-invoice/request?${params}&hmac=${hmac}`)), true);
   assert.equal(verifyAppProxyRequest(new Request(`https://app.example.com/tax-invoice/request?${params}&hmac=bad`)), false);
+});
+
+test("Shopify tax invoice link uses the shop proxy and encodes the order name", () => {
+  assert.equal(shopifyTaxInvoiceLink("demo.myshopify.com", "#1001"), "https://demo.myshopify.com/apps/tax-invoice/download?order=%231001");
 });

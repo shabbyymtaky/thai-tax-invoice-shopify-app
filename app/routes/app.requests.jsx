@@ -31,7 +31,7 @@ export default function RequestsPage() {
   const actionData = useActionData();
   return (
     <s-page heading="Tax Invoice requests">
-      {actionData?.ok && <s-banner tone="success" heading="Invoice issued">The invoice was generated and emailed when email credentials are configured.</s-banner>}
+      {actionData?.ok && <s-banner tone="success" heading="Invoice issued">The invoice is available through the Shopify email link. PDF attachment delivery is used only when Resend mode is selected.</s-banner>}
       {actionData?.error && <s-banner tone="critical" heading="Could not issue invoice">{actionData.error}</s-banner>}
       <s-section heading="Customer requests">
         {requests.length === 0 ? <s-paragraph>No requests yet.</s-paragraph> : requests.map((item) => (

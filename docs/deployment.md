@@ -4,12 +4,12 @@
 
 1. Node.js host for the React Router server (Cloudflare Workers/Pages is possible only after a runtime-specific Prisma/storage adaptation; a Node-compatible host is the shortest path for this repository).
 2. PostgreSQL or another production database. SQLite is for local/single-instance testing only.
-3. Resend domain and API key for automatic email.
-4. HTTPS public URL for Shopify OAuth, App Proxy, and webhooks.
+3. Resend domain and API key only if PDF attachment delivery is enabled. Shopify link delivery does not require Resend.
+4. HTTPS public URL for Shopify OAuth, App Proxy, secure PDF links, and webhooks.
 
 ## Environment variables
 
-Set `SHOPIFY_API_KEY`, `SHOPIFY_API_SECRET`, `SHOPIFY_APP_URL`, `SCOPES=read_orders,read_fulfillments`, `DATABASE_URL`, `RESEND_API_KEY`, and `EMAIL_FROM`. Never commit `.env` or tokens.
+Set `SHOPIFY_API_KEY`, `SHOPIFY_API_SECRET`, `SHOPIFY_APP_URL`, `SCOPES=read_orders,read_fulfillments`, and `DATABASE_URL`. Set `RESEND_API_KEY` and `EMAIL_FROM` only for PDF attachment delivery. Never commit `.env` or tokens.
 
 ## Build and start
 

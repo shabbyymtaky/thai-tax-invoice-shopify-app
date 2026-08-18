@@ -4,7 +4,7 @@ import { getSettings, saveSettings } from "../lib/settings.server";
 
 export const loader = async ({ request }) => {
   const { session } = await authenticate.admin(request);
-  return { settings: await getSettings(session.shop) };
+  return { settings: await getSettings(session.shop), shop: session.shop };
 };
 
 export const action = async ({ request }) => {
@@ -18,13 +18,14 @@ export const action = async ({ request }) => {
 };
 
 export default function SettingsPage() {
-  const { settings } = useLoaderData();
+  const { settings, shop } = useLoaderData();
   const actionData = useActionData();
   const vatRate = Number(settings.vatRate || 0);
   const sampleTotal = 1070;
   const sampleNet = settings.priceIncludesVat && vatRate > 0 ? sampleTotal / (1 + vatRate / 100) : sampleTotal;
   const sampleVat = settings.priceIncludesVat ? sampleTotal - sampleNet : sampleTotal * (vatRate / 100);
   const sampleGrandTotal = settings.priceIncludesVat ? sampleTotal : sampleTotal + sampleVat;
+  const exampleOrder = String(settings.nextInvoiceNumber).padStart(6, "0");
   const money = (value) => Number(value).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   return (
     <s-page heading="Tax Invoice settings">
@@ -45,8 +46,14 @@ export default function SettingsPage() {
         </s-section>
         <s-section heading="Automatic issue and email">
           <s-select name="issueTiming" label="Issue invoice when" value={settings.issueTiming}><s-option value="order_created">Order is created</s-option><s-option value="fulfilled">Order is fulfilled / shipped</s-option><s-option value="manual">Merchant manually approves</s-option></s-select>
+          <s-select name="emailDeliveryMode" label="Invoice delivery method" value={settings.emailDeliveryMode}><s-option value="shopify_link">Shopify email + secure PDF link (recommended)</s-option><s-option value="resend_attachment">External email + PDF attachment</s-option></s-select>
           <s-checkbox name="autoEmail" label="Automatically email the PDF to the customer's registered/request email" checked={settings.autoEmail}></s-checkbox>
-          <s-paragraph>Emails are sent only when RESEND_API_KEY and EMAIL_FROM are configured on the server. Without them, the invoice is still available for download from this app.</s-paragraph>
+          <s-paragraph>Shopify link mode keeps delivery in Shopify&apos;s standard customer email flow. Resend attachment mode requires RESEND_API_KEY and EMAIL_FROM. In either mode, the invoice remains available for download from this app.</s-paragraph>
+        </s-section>
+        <s-section heading="Shopify email setup">
+          <s-paragraph>Shopify does not allow public apps to edit notification templates automatically. Paste this snippet once in the Order confirmation and Shipping confirmation templates under Settings → Notifications.</s-paragraph>
+          <pre style={{ background: "#f6f6f7", border: "1px solid #dfe3e8", borderRadius: "8px", fontSize: "12px", overflowX: "auto", padding: "14px", whiteSpace: "pre-wrap" }}>{`{% if order.name %}\n  <p><a href="{{ shop.url }}/apps/tax-invoice/download?order={{ order.name | url_encode }}">Download Tax Invoice / ดาวน์โหลดใบกำกับภาษี</a></p>\n{% endif %}`}</pre>
+          <s-paragraph>Example link: {shop}/apps/tax-invoice/download?order=%23{exampleOrder}. The download page verifies the invoice email before returning the PDF.</s-paragraph>
         </s-section>
         <s-section heading="Optional branding">
           <s-paragraph>These images are printed on the PDF as visual branding. They are not cryptographic digital signatures and do not make the file an e-Tax Invoice.</s-paragraph>

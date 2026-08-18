@@ -6,9 +6,10 @@
 2. Merchant may upload logo, signature, and company stamp images (PNG/JPEG/WebP, each up to 2 MB).
 3. Buyer can request a tax invoice in a cart theme app block or through a checkout UI extension. The form supports individual/company, Tax ID, branch, registered address, and destination email.
 4. `orders/create` links the buyer request to the order. The merchant can choose issue at order creation, fulfillment, or manual approval.
-5. The app calculates Thai VAT, creates a numbered A4 PDF, shows it in the admin, and emails it through Resend when configured.
+5. The app calculates Thai VAT, creates a numbered A4 PDF, shows it in the admin, and makes it available through a Shopify App Proxy download link.
 6. Settings includes a saved-configuration preview of the Thai + English invoice layout, including uploaded branding images.
-7. Mandatory public-app privacy webhooks are registered for customer data request, customer redaction, and shop redaction.
+7. Shopify standard email delivery is the default: merchants paste a small Liquid link into Order confirmation and Shipping confirmation notifications. Resend PDF attachment delivery remains an optional mode.
+8. Mandatory public-app privacy webhooks are registered for customer data request, customer redaction, and shop redaction.
 
 ## Operational assumptions
 

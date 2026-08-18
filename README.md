@@ -9,7 +9,7 @@ Thai-localized Shopify app for collecting buyer tax details and generating selle
 - VAT calculation, invoice prefix/numbering, Thai + English PDF
 - Issue at order creation, fulfillment, or manual approval
 - Optional logo, signature, and company stamp image
-- Automatic email through Resend when configured
+- Shopify standard email + secure PDF link (Resend PDF attachment mode is optional)
 - Shopify HMAC-authenticated webhooks and App Proxy
 - GDPR compliance webhook endpoints for public App Store review
 
