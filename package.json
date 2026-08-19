@@ -15,7 +15,7 @@
     "env": "shopify app env",
     "start": "react-router-serve ./build/server/index.js",
     "docker-start": "npm run setup && npm run start",
-    "setup": "prisma generate && mkdir -p prisma && touch prisma/dev.sqlite && DATABASE_URL=\"${DATABASE_URL:-file:./dev.sqlite}\" prisma migrate deploy",
+    "setup": "prisma generate && prisma migrate deploy",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "shopify": "shopify",
     "prisma": "prisma",

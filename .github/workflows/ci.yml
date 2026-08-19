@@ -17,7 +17,7 @@ jobs:
       - run: npx prisma generate
       - run: npx prisma validate
         env:
-          DATABASE_URL: file:./dev.sqlite
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
       - run: npm test
       - run: npm run typecheck
       - run: npm run lint
