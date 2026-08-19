@@ -1,0 +1,50 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "thai-tax-invoice",
+  "main": "./cloudflare/index.js",
+  "compatibility_date": "2026-08-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "routes": [
+    {
+      "pattern": "tax-invoice.siamsignal.com",
+      "custom_domain": true
+    }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "NODE_ENV": "production",
+    "PORT": "3000",
+    "SCOPES": "read_orders,read_fulfillments"
+  },
+  "secrets": {
+    "required": [
+      "SHOPIFY_APP_URL",
+      "SHOPIFY_API_KEY",
+      "SHOPIFY_API_SECRET",
+      "DATABASE_URL"
+    ]
+  },
+  "containers": [
+    {
+      "class_name": "TaxInvoiceContainer",
+      "image": "./Dockerfile",
+      "max_instances": 1
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "TAX_INVOICE_CONTAINER",
+        "class_name": "TaxInvoiceContainer"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["TaxInvoiceContainer"]
+    }
+  ]
+}

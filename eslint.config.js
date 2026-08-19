@@ -20,6 +20,8 @@ export default tseslint.config(
       ".shopify/**",
       "extensions/*/dist/**",
       "app/types/**",
+      ".wrangler/**",
+      "worker-configuration.d.ts",
       "**/*.yml",
     ],
   },
