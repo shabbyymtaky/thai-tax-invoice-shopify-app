@@ -50,8 +50,12 @@ updates:
         update-types: ['version-update:semver-major']
       - dependency-name: '@react-router/serve'
         update-types: ['version-update:semver-major']
-      # eslint-plugin-react / -import / -jsx-a11y do not declare eslint 10 support yet.
+      # eslint-plugin-react / -import / -jsx-a11y do not declare eslint 10 support
+      # yet. @eslint/js ships from the same repo and must stay on the same major
+      # as eslint itself, so it is held back in lockstep.
       - dependency-name: 'eslint'
+        versions: ['>=10.0.0']
+      - dependency-name: '@eslint/js'
         versions: ['>=10.0.0']
       # @types/node should track the Node runtime in `engines` and CI (22.x).
       - dependency-name: '@types/node'
@@ -64,6 +68,11 @@ updates:
         patterns:
           - 'prisma'
           - '@prisma/client'
+      # eslint and @eslint/js ship from the same repo and must move together.
+      eslint:
+        patterns:
+          - 'eslint'
+          - '@eslint/js'
       react:
         patterns:
           - 'react'
