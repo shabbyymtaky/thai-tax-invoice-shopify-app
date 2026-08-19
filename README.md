@@ -24,7 +24,7 @@ npm run setup
 npm run dev
 ```
 
-The app runs on PostgreSQL in every environment, so local development needs a database too -- the `docker run` above matches the `DATABASE_URL` already in `.env.example`. A free Neon branch works just as well; point `DATABASE_URL` at it and skip the container.
+The app runs on PostgreSQL in every environment, so local development needs a database too -- the `docker run` above matches the `DATABASE_URL` already in `.env.example`. A hosted development database works just as well; point `DATABASE_URL` at it and skip the container. See [`docs/deployment.md`](./docs/deployment.md) for the production database choice.
 
 The Shopify CLI handles the development tunnel and injects Shopify credentials when the app is linked to a development store.
 
