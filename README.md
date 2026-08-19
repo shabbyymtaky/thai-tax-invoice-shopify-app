@@ -16,13 +16,17 @@ Thai-localized Shopify app for collecting buyer tax details and generating selle
 ## Local setup
 
 ```bash
+docker run -d --name tax-invoice-db -p 5432:5432 \
+  -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=tax_invoice postgres:16-alpine
 cp .env.example .env
 npm ci
 npm run setup
 npm run dev
 ```
 
-The Shopify CLI handles the development tunnel and injects Shopify credentials when the app is linked to a development store. Set `DATABASE_URL=file:./dev.sqlite` for local development (Prisma resolves this relative to `prisma/`).
+The app runs on PostgreSQL in every environment, so local development needs a database too -- the `docker run` above matches the `DATABASE_URL` already in `.env.example`. A free Neon branch works just as well; point `DATABASE_URL` at it and skip the container.
+
+The Shopify CLI handles the development tunnel and injects Shopify credentials when the app is linked to a development store.
 
 ## Scope boundary
 

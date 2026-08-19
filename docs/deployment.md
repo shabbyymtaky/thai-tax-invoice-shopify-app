@@ -3,7 +3,7 @@
 ## Required production services
 
 1. Cloudflare Workers + Containers can host the existing Node.js React Router server. The repository now includes `wrangler.jsonc` and `cloudflare/index.js` for this path. Containers require a Workers Paid plan, and deploying from a local machine requires a Docker daemon new enough that `docker build` runs BuildKit and accepts `--load` (Docker 23+, or any current Docker Desktop) -- Wrangler shells out to exactly that command to build the image.
-2. PostgreSQL or another shared production database. SQLite is for local/single-instance testing only; the current Container configuration pins to one instance, but its filesystem is not a durable database contract.
+2. A PostgreSQL database. The app targets PostgreSQL in every environment, including local development. Neon is the recommended host: it is serverless, scales to zero, and its pooled endpoint tolerates a container that sleeps and reconnects. Supabase, RDS or any other PostgreSQL works -- nothing in the schema is provider specific.
 3. Resend domain and API key only if PDF attachment delivery is enabled. Shopify link delivery does not require Resend.
 4. HTTPS public URL for Shopify OAuth, App Proxy, secure PDF links, and webhooks.
 
@@ -20,7 +20,7 @@ npm run cf:dry-run
 npm run cf:deploy
 ```
 
-Before deployment, set the production secrets in the Worker environment and provide a shared `DATABASE_URL`. Do not use the local `file:./dev.sqlite` value in production. The Worker routes requests to the Node container on port 3000 and enables Cloudflare observability.
+Before deployment, set the production secrets in the Worker environment, including a `DATABASE_URL` pointing at the production database. The Worker routes requests to the Node container on port 3000 and enables Cloudflare observability.
 
 Required secrets/variables:
 
@@ -44,6 +44,16 @@ npm run cf:types
 ### Container image notes
 
 The container runs the repository's own `Dockerfile` on `node:22-alpine`, matching `engines` and CI. It installs with `--omit=dev`, so anything the production build needs must live in `dependencies` -- that is why `vite` sits there alongside `@react-router/dev`. Wrangler is still pulled into that tree as an optional peer of `@react-router/dev`, and its bundled esbuild would otherwise collide with Vite's during `postinstall`, so `overrides.esbuild` pins both to one version.
+
+## Database
+
+The container runs `npm run setup` on boot, which is `prisma generate && prisma migrate deploy`. It applies any pending migration against `DATABASE_URL` and exits non-zero if the database is unreachable, so a misconfigured connection fails the boot instead of starting a half-working app.
+
+There is deliberately no fallback value. `DATABASE_URL` must be set.
+
+With Neon, use the **pooled** connection string. The container sleeps after 10 minutes idle (`sleepAfter` in `cloudflare/index.js`) and reconnects on the next request, which the pooler handles cleanly.
+
+Nothing in the container's own filesystem is durable -- it is rebuilt from the image on every cold start. The database is the only place state may live.
 
 ## Build and start
 
