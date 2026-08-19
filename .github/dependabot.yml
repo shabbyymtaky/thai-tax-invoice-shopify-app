@@ -23,6 +23,40 @@ updates:
       semver-minor-days: 14
       semver-patch-days: 14
 
+    # Majors that upstream packages currently forbid. Each entry is a hard peer
+    # dependency conflict, not a preference -- npm ci fails if they are taken.
+    # Re-check when the named package ships support, then drop the entry.
+    ignore:
+      # @shopify/ui-extensions-react -> @remote-ui/react pins react "<19.0.0".
+      - dependency-name: 'react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react-dom'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@types/react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@types/react-dom'
+        update-types: ['version-update:semver-major']
+      # Same chain pins react-reconciler ">=0.26.0 <0.30.0".
+      - dependency-name: 'react-reconciler'
+        versions: ['>=0.30.0']
+      # @shopify/shopify-app-react-router (incl. v2) pins react-router "^7.6.2".
+      - dependency-name: 'react-router'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@react-router/dev'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@react-router/fs-routes'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@react-router/node'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@react-router/serve'
+        update-types: ['version-update:semver-major']
+      # eslint-plugin-react / -import / -jsx-a11y do not declare eslint 10 support yet.
+      - dependency-name: 'eslint'
+        versions: ['>=10.0.0']
+      # @types/node should track the Node runtime in `engines` and CI (22.x).
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+
     groups:
 
       # Group together PRs of dependant packages
@@ -39,7 +73,6 @@ updates:
       vite:
         patterns:
           - 'vite'
-          - 'vite-tsconfig-paths'
       react-router:
         patterns:
           - '@react-router/dev'
