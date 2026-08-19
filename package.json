@@ -7,6 +7,10 @@
     "config:link": "shopify app config link",
     "generate": "shopify app generate",
     "deploy": "shopify app deploy",
+    "cf:dev": "wrangler dev",
+    "cf:dry-run": "wrangler deploy --dry-run",
+    "cf:deploy": "wrangler deploy",
+    "cf:types": "wrangler types",
     "config:use": "shopify app config use",
     "env": "shopify app env",
     "start": "react-router-serve ./build/server/index.js",
@@ -22,9 +26,10 @@
   },
   "type": "module",
   "engines": {
-    "node": ">=20.19 <22 || >=22.12"
+    "node": ">=22.12"
   },
   "dependencies": {
+    "@cloudflare/containers": "^0.3.7",
     "@fontsource/noto-sans-thai": "^5.3.0",
     "@prisma/client": "^6.19.3",
     "@react-router/dev": "^7.18.2",
@@ -42,7 +47,8 @@
     "react-dom": "^18.3.1",
     "react-reconciler": "^0.29.2",
     "react-router": "^7.18.2",
-    "resend": "^6.20.0"
+    "resend": "^6.20.0",
+    "vite": "^8.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
@@ -63,7 +69,7 @@
     "prettier": "^3.6.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.67.0",
-    "vite": "^8.2.1"
+    "wrangler": "^4.124.0"
   },
   "workspaces": [
     "extensions/*"
@@ -72,7 +78,8 @@
     "@shopify/plugin-cloudflare"
   ],
   "overrides": {
-    "p-map": "^4.0.0"
+    "p-map": "^4.0.0",
+    "esbuild": "^0.28.2"
   },
   "author": "akiyukiyumoto"
 }
