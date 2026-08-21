@@ -22,6 +22,39 @@ npm run cf:deploy
 
 Before deployment, set the production secrets in the Worker environment, including a `DATABASE_URL` pointing at the production database. The Worker routes requests to the Node container on port 3000 and enables Cloudflare observability.
 
+### Authenticating the deploy
+
+This app does not necessarily deploy to the same Cloudflare account as the one a
+machine happens to be logged into with `wrangler login`. Rather than switching
+the global login back and forth, put a scoped API token in `.env`:
+
+```
+CLOUDFLARE_API_TOKEN=...
+```
+
+Wrangler reads it from there and it takes precedence over the global OAuth
+login, so this project targets the right account while other projects keep
+using whatever they were using. `.env` is git-ignored.
+
+Create the token in the owning account's dashboard from the **Edit Cloudflare
+Workers** template, then add two permissions the template does not include:
+
+| Permission | Why |
+|---|---|
+| Account -> Workers Scripts -> Edit | included in the template; uploads the Worker and its Durable Object |
+| Account -> **Containers -> Edit** | publishes the container image and rolls out instances |
+| Account -> **Cloudchamber -> Edit** | provisions the compute the container runs on |
+| Zone -> Workers Routes -> Edit | included in the template; attaches the custom domain |
+
+Omitting the Containers or Cloudchamber permission still lets the Worker upload
+succeed, then fails partway through the container rollout, so confirm the token
+first:
+
+```bash
+npx wrangler whoami   # must report the account that owns this app
+npm run cf:dry-run    # builds the image and resolves bindings without deploying
+```
+
 Required secrets/variables:
 
 ```bash
